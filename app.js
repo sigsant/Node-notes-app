@@ -1,9 +1,11 @@
 const notes = require('./handler_notes')
+const { readSingleNote, FilterNote } = require('./handler_notes');
+
 
 const process = require('process');
+const fs = require('fs');
 const chalk = require('chalk');
 const { argv } = require('process');
-const { readSingleNote, FilterNote } = require('./handler_notes');
 const yargs = require('yargs')(process.argv.slice(2))
 
 .command({
@@ -33,7 +35,7 @@ const yargs = require('yargs')(process.argv.slice(2))
 })
 .example(
         '$0 add -t "Read" -b "The Odyssey"',
-        `Create a new note con the format:  
+        `Create a new note with the next format:  
             \n\tTitle: Read  
             \tBody: The Odyssey`
 )
@@ -82,6 +84,16 @@ const yargs = require('yargs')(process.argv.slice(2))
 .example(
     '\n$0 filter -t "Cook"',
     '\nShow all notes with the title "Cook"'
+)
+
+.command({
+    command: "delete",
+    describe: "Delete file notes.json",
+    handler: () => fs.rmSync("notes.json")
+})
+.example(
+    '\n$0 delete',
+    '\nDelete the file notes.json'
 )
 .version("1.0")
 .epilog("\n©2021 Noteapp v1.0")
